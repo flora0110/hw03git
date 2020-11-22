@@ -17,13 +17,11 @@ typedef struct Treenode{
 }node;
 node* build(int l,int r,int* arr){
     node* ptr=(node*)malloc(sizeof(node));
-    //printf("%d %d\n",l,r);
     if(r==l){
         ptr->sum=arr[l];
         ptr->ls=arr[l];
         ptr->rs=arr[l];
         ptr->max=arr[l];
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return ptr;
     }
     else{
@@ -36,7 +34,6 @@ node* build(int l,int r,int* arr){
         ptr->max=max(max(rightn->max,leftn->max),leftn->rs+rightn->ls);
         ptr->left=leftn;
         ptr->right=rightn;
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return ptr;
     }
 }
@@ -60,39 +57,24 @@ imfor findinq1(int a,int b,int l,int r,node* ptr){
         im.ls=ptr->ls;
         im.rs=ptr->rs;
         im.max=ptr->max;
-        //printf("fix %d %d\n",a,b);
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return im;
     }
     int m=(l+r)/2;
     if(b<=m){//都在左邊
-        //printf("all at left %d %d %d %d\n",a,b,l,r);
         im = findinq1(a,b,l,m,ptr->left);
-        //printf("in left %d %d\n",a,b);
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return im;
     }
     if(a>m){//都在右邊
-        //printf("all at right %d %d %d %d\n",a,b,l,r);
         im = findinq1(a,b,m+1,r,ptr->right);
-        //printf("in right %d %d\n",a,b);
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return im;
     }
     else{
-        //printf("middle %d %d %d %d\n",a,b,l,r );
-        //printf("------to left------\n");
         imfor leftim=findinq1(a,m,l,m,ptr->left);
-        //printf("!! left sum:%d ls:%d rs:%d max:%d\n",leftim.sum ,leftim.ls,leftim.rs,leftim.max);
-        //printf("------to right------\n");
         imfor rightim=findinq1(m+1,b,m+1,r,ptr->right);
-        //printf("!! right sum:%d ls:%d rs:%d max:%d\n",rightim.sum ,rightim.ls,rightim.rs,rightim.max);
         im.sum=leftim.sum+rightim.sum;
         im.ls=max(leftim.ls,leftim.sum+rightim.ls);
         im.rs=max(rightim.rs,rightim.sum+leftim.rs);
         im.max=max(max(rightim.max,leftim.max),leftim.rs+rightim.ls);
-        //printf("%d %d\n",a,b);
-        //printf("sum:%d ls:%d rs:%d max:%d\n",ptr->sum ,ptr->ls,ptr->rs,ptr->max);
         return im;
     }
 }
@@ -106,13 +88,8 @@ int find(int x1,int y1,int x2,int y2,int* arr,int n,node* root) {
         right=findinq1(y1+1,y2,1,n,root);
         leftedge=findinq1(x1,x2,1,n,root);
         rightedge=findinq1(y1,y2,1,n,root);
-        //printf("%d %d %d\n",middle.ls,middle.max,middle.rs);
-
         Max=max(max(left.rs+middle.ls,middle.rs+right.ls),middle.max);
-        //printf("origin max : %d\n",Max );
-        //printf("%d %d\n",leftedge.rs,rightedge.ls);
         Max=max(max(Max,left.rs+middle.sum+right.ls),max(leftedge.rs,rightedge.ls));
-        //printf("max : %d\n",Max );
         return Max;
     }
     int max=arr[y1];
@@ -149,7 +126,7 @@ int main(){
     fscanf(rptr,"%d\n",&t);
     printf("t: %d\n",t);
     int* arr;
-    for(i=0;i<t;i++){//1>t-----------------------------
+    for(i=0;i<t;i++){
         fscanf(rptr,"%d\n",&n);
         printf("n: %d\n",n);
         arr=(int*)malloc((n+1)*sizeof(int));
@@ -158,29 +135,15 @@ int main(){
             fscanf(rptr,"%d ",&arr[j]);
         }
         fscanf(rptr,"%d\n",&arr[n]);
-        /*//test-----------------------------
-        printf("----test----\n");
-        for(j=0;j<=n;j++){
-            printf("%d \n",arr[j]);
-        }
-        printf("------------\n");
-        //---------------------------------*/
         node* root;
         root=build(1,n,arr);
         fscanf(rptr,"%d\n",&m);
         printf("m: %d\n",m);
         int x1,x2,y1,y2,max;
-        //int testcount=0;
         for(j=0;j<m;j++){
-            //printf("in for\n");
             fscanf(rptr,"%d %d %d %d\n",&x1,&y1,&x2,&y2);
-            //printf("\n%d\n",testcount );
-            //printf("%d %d %d %d\n",x1,y1,x2,y2);
             max=find(x1,y1,x2,y2,arr,n,root);
-            //printf("max %d\n",max);
-            //fprintf(wptr,"%d: %d\n",testcount++,max);
             fprintf(wptr,"%d\n",max);
         }
-
     }
 }
