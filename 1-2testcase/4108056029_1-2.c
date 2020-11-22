@@ -109,10 +109,10 @@ int find(int x1,int y1,int x2,int y2,int* arr,int n,node* root) {
         //printf("%d %d %d\n",middle.ls,middle.max,middle.rs);
 
         Max=max(max(left.rs+middle.ls,middle.rs+right.ls),middle.max);
-        printf("origin max : %d\n",Max );
+        //printf("origin max : %d\n",Max );
         //printf("%d %d\n",leftedge.rs,rightedge.ls);
-        Max=max(Max,max(leftedge.rs,rightedge.ls));
-        printf("max : %d\n",Max );
+        Max=max(max(Max,left.rs+middle.sum+right.ls),max(leftedge.rs,rightedge.ls));
+        //printf("max : %d\n",Max );
         return Max;
     }
     int max=arr[y1];
@@ -138,7 +138,7 @@ int find(int x1,int y1,int x2,int y2,int* arr,int n,node* root) {
 int main(){
     FILE *rptr;
     FILE *wptr;
-    rptr=fopen("test2.txt","r");
+    rptr=fopen("test3.txt","r");
     wptr=fopen("output1-1.txt","w");
     if(rptr==NULL ||wptr==NULL){
         printf("open error\n");
@@ -170,15 +170,16 @@ int main(){
         fscanf(rptr,"%d\n",&m);
         printf("m: %d\n",m);
         int x1,x2,y1,y2,max;
-        int testcount=0;
+        //int testcount=0;
         for(j=0;j<m;j++){
             //printf("in for\n");
             fscanf(rptr,"%d %d %d %d\n",&x1,&y1,&x2,&y2);
-            printf("\n%d\n",testcount );
+            //printf("\n%d\n",testcount );
             //printf("%d %d %d %d\n",x1,y1,x2,y2);
             max=find(x1,y1,x2,y2,arr,n,root);
-            printf("max %d\n",max);
-            fprintf(wptr,"%d: %d\n",testcount++,max);
+            //printf("max %d\n",max);
+            //fprintf(wptr,"%d: %d\n",testcount++,max);
+            fprintf(wptr,"%d\n",max);
         }
 
     }
