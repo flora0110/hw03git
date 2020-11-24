@@ -11,12 +11,9 @@ char* trans(char* word){
     int n=0;
     char *result=(char*)malloc(400*sizeof(char));
     for(i=0;i<strlen(word);i++){
-        //printf("for %d\n",strlen(mose[word[i]-65]));
         for(j=0;j<strlen(mose[word[i]-65]);j++){
             result[n++]=mose[word[i]-65][j];
-            //printf("%d %c %c\n",j,mose[word[i]-65][j],result[n-1]);
         }
-        result[n]='\0';
     }
     return result;
 }
@@ -27,21 +24,13 @@ int indiction(char* code,char** diction,int n){
         if(strlen(code)!=strlen(diction[i])){
             continue;
         }
-        check=1;
         for(j=0;j<strlen(code);j++){
+            check=1;
             if(code[j]!=diction[i][j]){
                 check=0;
-                break;
             }
         }
         if(check==1){
-            //printf("test:   %d %d\n",strlen(code),strlen(diction[i]));
-            /*for(j=0;j<strlen(code);j++){
-                printf("%c",diction[j]);
-                //fprintf(wptr,"%c",ans[j]);
-            }
-            printf("\n");*/
-            //printf("diction no.%d\n",i );
             return 1;
         }
     }
@@ -50,7 +39,7 @@ int indiction(char* code,char** diction,int n){
 int main(){
     FILE *rptr;
     FILE *wptr;
-    rptr=fopen("test3.txt","r");
+    rptr=fopen("test1.txt","r");
     wptr=fopen("output2-1.txt","w");
     if(rptr==NULL|| wptr==NULL){
         printf("open error\n");
@@ -66,24 +55,28 @@ int main(){
         fscanf(rptr,"%[A-Z]\n",&word);
         ans=trans(word);
         diction[i]=ans;
-
-        //fprintf(wptr,"\n");
+        for(j=0;j<strlen(ans);j++){
+            printf("%c",ans[j]);
+            fprintf(wptr,"%c",ans[j]);
+        }
+        printf("\n");
+        fprintf(wptr,"\n");
     }
     fscanf(rptr,"%d\n",&m);
-    printf("\n");
+
     for(i=0;i<m;i++){
         fscanf(rptr,"%[.-]\n",&code);
         for(j=0;j<strlen(code);j++){
-            //printf("%c",code[j]);
+            printf("%c",code[j]);
             fprintf(wptr,"%c",code[j]);
         }
         if(indiction(code,diction,n)){
-            //printf(" is found in the dictionary.\n");
-            fprintf(wptr," is found in the dictionary.\n");
+            printf("is found in the dictionary.\n");
+            fprintf(wptr,"is found in the dictionary.\n");
         }
         else{
-            //printf(" is not found in the dictionary.\n");
-            fprintf(wptr," is not found in the dictionary.\n");
+            printf("is found in the dictionary.\n");
+            fprintf(wptr,"is found in the dictionary.\n");
         }
     }
     fclose(wptr);

@@ -25,31 +25,46 @@ node build(int l,int r,int* arr){
     printf("in build\n");
     node ptr;
     node* ptrn=&ptr;
-    ptrn=(node*)malloc(sizeof(node));
+    //ptrn=(node*)malloc(sizeof(node));
     //node* ptrn=(node*)malloc(sizeof(node));
-    printf("ptr\n");
+    //printf("ptr\n");
     if(r==l){
         //ptrn=(node*)malloc(sizeof(node));
-        printf("in if\n");
+        //printf("in if\n");
         ptrn->sum=arr[l];
         ptrn->ls=arr[l];
         ptrn->rs=arr[l];
         ptrn->max=arr[l];
+        printf("leaf : %d %d : %d\n",l,r,ptrn->sum);
         return ptr;
     }
     else{
-        printf("inelse \n" );
+        //printf("inelse \n" );
+        printf("%d %d\n",l,r );
         //ptrn=(node*)malloc(sizeof(node));
         printf("in else\n");
         int m=(l+r)/2;
+        printf("in left\n");
         node leftn=build(1,m,arr);
+        printf("in right\n");
         node rightn=build(m+1,r,arr);
         ptrn->sum=leftn.sum+rightn.sum;
+        printf("left: %d right: %d\n",leftn.sum,rightn.sum );
         ptrn->ls=max(leftn.ls,leftn.sum+rightn.ls);
         ptrn->rs=max(rightn.rs,rightn.sum+leftn.rs);
         ptrn->max=max(max(rightn.max,leftn.max),leftn.rs+rightn.ls);
+        printf("node : %d %d : %d\n",l,r,ptrn->sum);
         ptrn->left=&leftn;
         ptrn->right=&rightn;
+        /*
+        ptrn->sum=leftn->sum+rightn->sum;
+        printf("left: %d right: %d\n",leftn->sum,rightn->sum );
+        ptrn->ls=max(leftn->ls,leftn->sum+rightn->ls);
+        ptrn->rs=max(rightn->rs,rightn->sum+leftn->rs);
+        ptrn->max=max(max(rightn->max,leftn->max),leftn->rs+rightn->ls);
+        printf("node : %d %d : %d\n",l,r,ptrn->sum);
+        ptrn->left=leftn;
+        ptrn->right=rightn;*/
         return ptr;
     }
 }
@@ -118,23 +133,26 @@ int main(){
     int t,n,m;
     fscanf(rptr,"%d\n",&t);
     printf("t: %d\n",t);
-    node root;
+    node* root;
     int* arr;
     for(i=0;i<t;i++){
         fscanf(rptr,"%d\n",&n);
         printf("n: %d\n",n);
-        arr=(int*)malloc(n*sizeof(int));
-        for(j=1;j<=n;j++){
-            fscanf(rptr,"%d",&arr[j]);
+        arr=(int*)malloc((n+1)*sizeof(int));
+        arr[0]=0;
+        for(j=1;j<n;j++){
+            fscanf(rptr,"%d ",&arr[j]);
         }
+        fscanf(rptr,"%d\n",&arr[j]);
         //test-----------------------------
         printf("----test----\n");
         for(j=1;j<=n;j++){
             printf("%d \n",arr[j]);
         }
         printf("------------\n");
-        //---------------------------------
-        root=build(1,n,arr);
+        //---------------------------------*/
+        //int a[8]={1,2,3,4,5,6,7,8};
+        root=build(1,n,arr,n);
         fscanf(rptr,"%d\n",&m);
         printf("m: %d\n",m);
         char c;
