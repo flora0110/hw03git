@@ -134,4 +134,6 @@ int main(){
         }
 
     }
+    fclose(wptr);
+    fclose(rptr);
 }
