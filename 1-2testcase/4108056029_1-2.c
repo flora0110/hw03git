@@ -146,4 +146,6 @@ int main(){
             fprintf(wptr,"%d\n",max);
         }
     }
+    fclose(wptr);
+    fclose(rptr);
 }
