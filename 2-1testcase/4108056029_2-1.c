@@ -9,21 +9,11 @@ char mose[26][5]={{'.','-'},{'-','.','.','.'},{'-','.','-','.'},{'-','.','.'},{'
 char* trans(char* word){
     int i,j;
     int n=0;
-    /*
-    printf("%c\n",mose[1][5]);
-    for(i=0;i<26;i++){
-        printf("%d %d\n",i,strlen(mose[i]));
-    }*/
-    //printf("%d\n",strlen(mose[0]));
     char *result=(char*)malloc(400*sizeof(char));
     for(i=0;i<strlen(word);i++){
-        //printf("%c %d\n",word[i],word[i] );
-        //printf("%d\n",strlen(mose[word[i]-65]) );
         for(j=0;j<strlen(mose[word[i]-65]);j++){
             result[n++]=mose[word[i]-65][j];
-            //printf("%c",mose[word[i]-65][j]);
         }
-        //printf("\n");
     }
     return result;
 }
@@ -31,7 +21,6 @@ int indiction(char* code,char** diction,int n){
     int i,j;
     int check=0;
     for(i=0;i<n;i++){
-        //printf("codelen: %d diclen: %d\n",strlen(code),strlen(diction[i]));
         if(strlen(code)!=strlen(diction[i])){
             continue;
         }
@@ -64,33 +53,32 @@ int main(){
     char **diction=(char**)malloc(n*sizeof(char*));
     for(i=0;i<n;i++){
         fscanf(rptr,"%[A-Z]\n",&word);
-        //test---------------
-        printf("%d \n",strlen(word));
-        for(j=0;j<strlen(word);j++){
-            printf("%c",word[j]);
-        }
-        printf("\n");
-        //------------------
         ans=trans(word);
         diction[i]=ans;
         for(j=0;j<strlen(ans);j++){
             printf("%c",ans[j]);
+            fprintf(wptr,"%c",ans[j]);
         }
         printf("\n");
+        fprintf(wptr,"\n");
     }
     fscanf(rptr,"%d\n",&m);
 
     for(i=0;i<m;i++){
         fscanf(rptr,"%[.-]\n",&code);
-        //test---------------
-        printf("%d \n",strlen(code));
         for(j=0;j<strlen(code);j++){
             printf("%c",code[j]);
+            fprintf(wptr,"%c",code[j]);
         }
-        printf("\n");
-        //------------------
         if(indiction(code,diction,n)){
-            printf("It is found in the dictionary.\n");
+            printf("is found in the dictionary.\n");
+            fprintf(wptr,"is found in the dictionary.\n");
+        }
+        else{
+            printf("is not found in the dictionary.\n");
+            fprintf(wptr,"is not found in the dictionary.\n");
         }
     }
+    fclose(wptr);
+    fclose(rptr);
 }
