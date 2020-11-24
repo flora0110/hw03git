@@ -35,13 +35,6 @@ int indiction(char* code,char** diction,int n){
             }
         }
         if(check==1){
-            //printf("test:   %d %d\n",strlen(code),strlen(diction[i]));
-            /*for(j=0;j<strlen(code);j++){
-                printf("%c",diction[j]);
-                //fprintf(wptr,"%c",ans[j]);
-            }
-            printf("\n");*/
-            //printf("diction no.%d\n",i );
             return 1;
         }
     }
