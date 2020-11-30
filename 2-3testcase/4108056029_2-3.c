@@ -1,6 +1,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#define MALLOC(p,s)\
+    if(!((p)=malloc(s))){\
+        fprintf(stderr,"Insufficient memory");\
+        exit(EXIT_FAILURE);\
+    }
 void find(char*,int);
 long long check(char*,int);
 char mose[26][5]={{'.','-'},{'-','.','.','.'},{'-','.','-','.'},{'-','.','.'},{'.'},\
@@ -8,7 +13,7 @@ char mose[26][5]={{'.','-'},{'-','.','.','.'},{'-','.','-','.'},{'-','.','.'},{'
     {'-','.','-'},{'.','-','.','.'},{'-','-'},{'-','.'},{'-','-','-'},\
     {'.','-','-','.'},{'-','-','.','-'},{'.','-','.'},{'.','.','.'},{'-'},\
     {'.','.','-'},{'.','.','.','-'},{'.','-','-'},{'-','.','.','-'},{'-','.','-','-'},{'-','-','.','.'}};
-typedef struct stack* stackpointer;
+/*typedef struct stack* stackpointer;
 typedef struct stack{
     char* data;
     stackpointer link;
@@ -35,7 +40,7 @@ char* pop(){
     top=temp->link;
     free(temp);
     return item;
-}
+}*/
 
 typedef struct node* nodepointer;
 typedef struct node{
@@ -62,10 +67,12 @@ char* trans(char* word){
         if(result[i]=='.'){
             //printf("inn\n" );
             if(temp->dot==NULL){
-                nodepointer new=(node*)malloc(sizeof(node));
+                nodepointer new;//=(node*)malloc(sizeof(node));
+                MALLOC(new,sizeof(node));
                 new->dot=NULL;
                 new->dash=NULL;
-                new->data=-1;
+                new->data=0;
+                //new->data=testc--;
                 temp->dot=new;
                 //printf("dot\n");
             }
@@ -73,17 +80,20 @@ char* trans(char* word){
         }
         else if(result[i]=='-'){
             if(temp->dash==NULL){
-                nodepointer new=(node*)malloc(sizeof(node));
+                nodepointer new;//=(node*)malloc(sizeof(node));
+                MALLOC(new,sizeof(node));
                 new->dot=NULL;
                 new->dash=NULL;
-                new->data=-1;
+                new->data=0;
+                //new->data=testc--;
                 temp->dash=new;
                 //printf("dash\n");
             }
             temp=temp->dash;
         }
     }
-    temp->data=n;
+    temp->data++;
+    //printf("temp->data %d\n",temp->data );
     //printf("result\n");
     //system("pause");
     return result;
@@ -94,16 +104,16 @@ long long *arrive;
 void find(char* code,int now){
     //printf("ffffffffffffffffffffffffffffffffff\n" );
     nodepointer temp=root;
-    printf("in find now %d\n",now );
+    //printf("in find now %d\n",now );
     int orinow=now;
-    int i;
+    /*int i;
     for(i=now;i<strlen(code);i++){
         printf("%c",code[i] );
     }
-    printf("\n");
+    printf("\n");*/
     do{
         //printf("in do\n");
-        printf("%c\n",code[now]);
+        //printf("%d %c\n",now,code[now]);
 
         if(code[now]=='.'){
             temp=temp->dot;
@@ -118,18 +128,21 @@ void find(char* code,int now){
         if(!temp){
             break;
         }
+
         //printf("kkk\n");
-        if(temp->data!=-1 && temp){
+        if(temp->data!=0){
             //printf("222\n");
-            printf("result %d\n",now);
-            printf("before ++ing arrive[%d] = %lld\n",orinow,arrive[orinow]);
-            arrive[orinow]+=check(code,now);
-            printf("++ing arrive[%d] = %lld\n",orinow,arrive[orinow]);
+            //printf("result %d\n",now);
+            //system("pause");
+            //printf("before ++ing arrive[%d] = %lld\n",orinow,arrive[orinow]);
+
+            arrive[orinow]+=(temp->data)*check(code,now);
+            //printf("++ing arrive[%d] = %lld\n",orinow,arrive[orinow]);
         }
         //printf("333\n");
-        printf("%d\n",now );
-    }while(temp && now<strlen(code));
-    printf("--------------over\n");
+    }while(now<strlen(code));
+    //printf("--------------over\n");
+    //system("pause");
     //printf("ooooooooooooooooooooooooooooooofffffffffffffff\n" );
     return;
 }
@@ -137,11 +150,11 @@ void find(char* code,int now){
 long long check(char* code,int now){//dicn是字典量
     //printf("now %d\n",now );
     //printf("cccccccccccccccccccccccccccccccccc\n");
-    printf("in ckeck now %d\n",now);
+    //printf("in ckeck now %d\n",now);
     int i,j,t;
     if(now==strlen(code)){
         sum++;
-        printf("---------------%d\n",sum );
+        //printf("---------------%lld\n",sum );
         /*//test------------
         stackpointer temp=top;
         printf("ans\n");
@@ -157,10 +170,10 @@ long long check(char* code,int now){//dicn是字典量
         //test-----------*/
         return 1;
     }
-    if(!step[now]){
+    if(step[now]==0){
         sum+=arrive[now];
-        printf("--------------     %lld\n",sum);
-        printf("add arrive[%d] (%lld) = %lld\n",now,arrive[now],sum );
+        //printf("--------------     %lld\n",sum);
+        //printf("add arrive[%d] (%lld) = %lld\n",now,arrive[now],sum );
         //printf("------------------------------------------------------\n");
         return arrive[now];
     }
@@ -193,14 +206,22 @@ long long check(char* code,int now){//dicn是字典量
         }
     }*/
     step[now]=0;
-    printf("arrive[%d] = %lld\n",now,arrive[now]);
+    //printf("arrive[%d] = %lld\n",now,arrive[now]);
     //printf("-----------------------------now-------------------------\n");
     return arrive[now];
 }
+/*void dfs(node* temp){
+    if(temp==NULL){
+        return;
+    }
+    dfs(temp->dot);
+    dfs(temp->dash);
+    //printf("%d\n",temp->data );
+}*/
 int main(){
     FILE *rptr;
     FILE *wptr;
-    rptr=fopen("test2.txt","r");
+    rptr=fopen("test4.txt","r");
     wptr=fopen("output2-3.txt","w");
     if(rptr==NULL|| wptr==NULL){
         printf("open error\n");
@@ -212,12 +233,12 @@ int main(){
     int n;
     int i,j;
     root=(nodepointer)malloc(sizeof(node));
-    root->data=-1;
+    root->data=0;
     root->dot=NULL;
     root->dash=NULL;
     char *code=(char*)malloc(100001*sizeof(char));
     fscanf(rptr,"%[-.]\n",code);
-    //test---------
+    /*//test---------
     printf("strlen %d\n",strlen(code));
     for(i=0;i<strlen(code);i++){
         printf("%c",code[i] );
@@ -235,9 +256,9 @@ int main(){
     for(i=0;i<coden;i++){
         step[i]=1;
     }
-    char **diction=(char**)malloc(n*sizeof(char*));
+    //char **diction=(char**)malloc(n*sizeof(char*));
     char *word=(char*)malloc(21*sizeof(char));
-    char *trcode=(char*)malloc(21*sizeof(char));
+    //char *trcode=(char*)malloc(21*sizeof(char));
     for(i=0;i<n;i++){
         fscanf(rptr,"%[A-Z]\n",word);
         /*printf("-----word------\n");
@@ -246,17 +267,26 @@ int main(){
         }
         printf("\n");
         printf("-----------------\n");*/
-        trcode=trans(word);
-        diction[i]=trcode;
-        //test-----
+        //printf("%d\n",i );
+        trans(word);
+        //trcode=trans(word);
+        //diction[i]=trcode;
+        /*//test-----
         for(j=0;j<strlen(diction[i]);j++){
             printf("%c",diction[i][j]);
         }
-        printf("\n");
+        printf(" %d\n",strlen(diction[i]));
         //test-----*/
     }
-    printf("tran over\n");
+    //printf("tran over\n");
+    //nodepointer t=root;
+    //dfs(t);
+    //printf("------------------------------\n");
     check(code,0);
-    printf("outt\n");
+    /*for(i=0;i<coden;i++){
+        printf("%10lld ",arrive[i] );
+    }
+    printf("\n");*/
+    //printf("outt\n");
     printf("output: %lld\n",arrive[0]);
 }
