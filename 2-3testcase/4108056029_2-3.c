@@ -98,7 +98,7 @@ char* trans(char* word){
     //system("pause");
     return result;
 }
-long long sum=0;
+//long long sum=0;
 int *step;
 long long *arrive;
 void find(char* code,int now){
@@ -153,7 +153,7 @@ long long check(char* code,int now){//dicn是字典量
     //printf("in ckeck now %d\n",now);
     int i,j,t;
     if(now==strlen(code)){
-        sum++;
+        //sum++;
         //printf("---------------%lld\n",sum );
         /*//test------------
         stackpointer temp=top;
@@ -171,7 +171,7 @@ long long check(char* code,int now){//dicn是字典量
         return 1;
     }
     if(step[now]==0){
-        sum+=arrive[now];
+        //sum+=arrive[now];
         //printf("--------------     %lld\n",sum);
         //printf("add arrive[%d] (%lld) = %lld\n",now,arrive[now],sum );
         //printf("------------------------------------------------------\n");
@@ -227,9 +227,9 @@ int main(){
         printf("open error\n");
         return 0;
     }
-    long long testlong=57330892800;
-    printf("%lld\n",testlong );
-    printf("%d\n",sizeof(testlong));
+    //long long testlong=57330892800;
+    //printf("%lld\n",testlong );
+    //printf("%d\n",sizeof(testlong));
     int n;
     int i,j;
     root=(nodepointer)malloc(sizeof(node));
@@ -246,7 +246,7 @@ int main(){
     printf("\n");
     //test--------*/
     fscanf(rptr,"%d\n",&n);
-    printf("n: %d\n",n );
+    //printf("n: %d\n",n );
     int coden=strlen(code);
     step=(int*)malloc(coden*sizeof(int));
     arrive=(long long*)malloc(coden*sizeof(long long));
@@ -289,4 +289,12 @@ int main(){
     printf("\n");*/
     //printf("outt\n");
     printf("output: %lld\n",arrive[0]);
+    fprintf(wptr,"output: %lld\n",arrive[0]);
+
+    free(code);
+    free(word);
+    free(step);
+    free(arrive);
+    fclose(rptr);
+    fclose(wptr);
 }
